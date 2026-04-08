@@ -1,0 +1,55 @@
+.nav {
+  position: fixed; top: 0; width: 100%; z-index: 100;
+  background: rgba(17,17,17,0.97);
+  backdrop-filter: blur(12px);
+  padding: 0 5%;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 70px;
+  border-bottom: 1px solid rgba(184,151,90,0.25);
+}
+
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem; font-weight: 600; letter-spacing: 0.08em;
+  color: var(--gold-light); text-decoration: none;
+  display: flex; align-items: center; gap: 10px;
+}
+.logo span { color: #fff; font-weight: 300; font-style: italic; }
+.logo svg { flex-shrink: 0; }
+
+.links {
+  display: flex; gap: 2.2rem; list-style: none;
+}
+.links a {
+  color: rgba(255,255,255,0.75);
+  text-decoration: none; font-size: 0.78rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  font-weight: 500; transition: color 0.3s;
+}
+.links a:hover { color: var(--gold-light); }
+
+.cta {
+  background: var(--gold); color: #fff;
+  padding: 9px 22px; border: none; cursor: pointer;
+  font-family: 'Jost', sans-serif; font-size: 0.75rem;
+  letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500;
+  transition: background 0.3s; text-decoration: none;
+}
+.cta:hover { background: var(--gold-light); }
+
+@media (max-width: 900px) {
+  .links { display: none; }
+}
+
+.logoImg {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(2.5);
+}
+
+@media (max-width: 600px) {
+  .logoImg {
+    height: 28px;
+  }
+}

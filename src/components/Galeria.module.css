@@ -1,0 +1,46 @@
+.section { padding: 100px 5%; background: var(--section-bg); }
+
+.header { text-align: center; margin-bottom: 4rem; }
+
+.tag {
+  font-size: 0.68rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--gold); font-weight: 500; display: block; margin-bottom: 0.8rem;
+}
+
+.title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 300; line-height: 1.15;
+}
+
+.title em { color: var(--gold); font-style: italic; }
+
+.line { width: 50px; height: 1px; background: var(--gold); margin: 1.5rem auto 0; display: block; }
+
+.masonry { columns: 4; column-gap: 3px; }
+
+.item {
+  break-inside: avoid; margin-bottom: 3px;
+  overflow: hidden; position: relative; cursor: pointer;
+}
+
+.item img {
+  width: 100%; display: block;
+  height: 520px;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.6s ease; filter: brightness(0.9);
+  }
+
+.item:hover img { transform: scale(1.05); filter: brightness(1); }
+
+.hover {
+  position: absolute; inset: 0;
+  background: rgba(184,151,90,0.55);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.35s;
+}
+.item:hover .hover { opacity: 1; }
+
+.hover span { color: #fff; font-size: 2rem; line-height: 1; }
+
+@media (max-width: 900px) { .masonry { columns: 2; } }
