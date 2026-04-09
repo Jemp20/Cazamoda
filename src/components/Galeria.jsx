@@ -5,11 +5,11 @@ const photos = [
   'Foto3.jpg',
   'Foto20.jpg',
   'Foto1.jpeg',
-  'Foto4.jpeg',
+  'FotoM.jpeg',
   'Foto9.jpeg',
   'Foto6.jpeg',
   'Foto8.jpeg',
-  'Foto10.jpeg',
+  'FotoL.jpeg',
 ]
 
 export default function Galeria() {
