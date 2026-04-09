@@ -2,8 +2,9 @@ import { useState, useRef } from 'react'
 import { useProductos } from '../context/ProductosContext'
 import styles from './Admin.module.css'
 
-const CATEGORIAS_HOMBRE = ['Camisas', 'Jeans', 'Chaquetas', 'Conjuntos', 'Otro']
-const CATEGORIAS_MUJER  = ['Blusas', 'Shorts', 'Vestidos', 'Camisas', 'Otro']
+const CATEGORIAS_HOMBRE      = ['Camisas', 'Jeans', 'Chaquetas', 'Conjuntos', 'Camisa', 'Pantalón', 'Bermuda', 'Camisetas', 'Polo', 'Saco', 'Otro']
+const CATEGORIAS_MUJER       = ['Blusas', 'Shorts', 'Vestidos', 'Camisas', 'Pantalón', 'Camisa', 'Falda', 'Short', 'Vestido', 'Enterizo', 'Otro']
+const CATEGORIAS_CORPORATIVO = ['Administrativo', 'Operativo e Industrial', 'Hospitalarios', 'Hostelería', 'Servicio General', 'Promo Colegiales']
 
 const PASS = 'cazamoda2026'
 
@@ -27,7 +28,10 @@ export default function Admin() {
     else setPassError(true)
   }
 
-  const categorias = form.genero === 'Mujer' ? CATEGORIAS_MUJER : CATEGORIAS_HOMBRE
+  const categorias =
+    form.genero === 'Mujer'       ? CATEGORIAS_MUJER       :
+    form.genero === 'Corporativo' ? CATEGORIAS_CORPORATIVO :
+    CATEGORIAS_HOMBRE
 
   const handleFile = (e) => {
     const file = e.target.files[0]
@@ -56,7 +60,10 @@ export default function Admin() {
     setForm(f => {
       const updated = { ...f, [name]: value }
       if (name === 'genero') {
-        updated.category = value === 'Mujer' ? CATEGORIAS_MUJER[0] : CATEGORIAS_HOMBRE[0]
+        updated.category =
+          value === 'Mujer'       ? CATEGORIAS_MUJER[0]       :
+          value === 'Corporativo' ? CATEGORIAS_CORPORATIVO[0] :
+          CATEGORIAS_HOMBRE[0]
       }
       return updated
     })
@@ -152,15 +159,16 @@ export default function Admin() {
           <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFile} />
 
           <div className={styles.field}>
-            <label>Nombre de la prenda *</label>
+            <label>Nombre de la prenda</label>
             <input name="name" value={form.name} onChange={handleChange} placeholder="Ej: Camisa lino blanco" />
           </div>
 
           <div className={styles.field}>
-            <label>Género</label>
+            <label>Opción</label>
             <select name="genero" value={form.genero} onChange={handleChange}>
               <option value="Hombre">Hombre</option>
               <option value="Mujer">Mujer</option>
+              <option value="Corporativo">Línea Corporativa</option>
             </select>
           </div>
 

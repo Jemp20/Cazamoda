@@ -7,7 +7,8 @@ const contactItems = [
   { icon: '📱', text: '+57 300 1281861', href: 'https://wa.me/573001281861' },
   { icon: '📞', text: '605-3964398', href: 'tel:6053964398' },
   { icon: '📸', text: '@cazamoda_confeccion', href: 'https://www.instagram.com/cazamoda_confeccion' },
-  { icon: '🕐', text: 'Lunes – Sábado: 8:00am – 5:30pm', href: null },
+  { icon: '🕐', text: 'Lunes – Viernes: 8:00am – 6:00pm', href: null },
+  { icon: '🕐', text: 'Sabado: 8:00am – 4:00pm', href: null },
 ]
 
 const WHATSAPP_NUMBER = '573001281861' 
@@ -102,6 +103,7 @@ export default function Contacto() {
             <option value="">Selecciona un servicio</option>
             <option>Confección de prenda</option>
             <option>Arreglo de prenda</option>
+            <option>Dotacion corporativa</option>
             <option>Otro</option>
           </select>
         </div>

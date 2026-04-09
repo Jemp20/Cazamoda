@@ -5,8 +5,11 @@ import styles from './Catalogo.module.css'
 
 const WHATSAPP_NUMBER = '573001281861'
 
-const filtersHombre = ['Todo', 'Camisas', 'Jeans', 'Chaquetas', 'Conjuntos']
-const filtersMujer  = ['Todo', 'Blusas', 'Shorts', 'Vestidos', 'Camisas']
+const filtersHombre      = ['Todo', 'Camisas', 'Jeans', 'Chaquetas', 'Conjuntos', 'Camisa', 'Pantalón', 'Bermuda', 'Camisetas', 'Polo', 'Saco']
+const filtersMujer       = ['Todo', 'Blusas', 'Shorts', 'Vestidos', 'Camisas', 'Pantalón', 'Camisa', 'Falda', 'Short', 'Vestido', 'Enterizo']
+const filtersCorporativo = ['Todo', 'Administrativo', 'Operativo e Industrial', 'Hospitalarios', 'Hostelería', 'Servicio General', 'Promo Colegiales']
+
+
 
 export default function Catalogo() {
   const { productos } = useProductos()
@@ -26,7 +29,13 @@ export default function Catalogo() {
   const headerRef = useReveal()
   const gridRef   = useReveal()
 
-  const filters = genero === 'Hombre' ? filtersHombre : filtersMujer
+  const isCorporativo = genero === 'Corporativo'
+
+  const filters = genero === 'Hombre'
+    ? filtersHombre
+    : genero === 'Mujer'
+    ? filtersMujer
+    : filtersCorporativo
 
   const cambiarGenero = (g) => {
     setGenero(g)
@@ -130,7 +139,7 @@ export default function Catalogo() {
           <span className={styles.line} />
         </div>
 
-        {/* Selector Hombre / Mujer */}
+        {/* Selector Hombre / Mujer / Línea Corporativa */}
         <div className={styles.generoSelector}>
           <button
             className={`${styles.generoBtn} ${genero === 'Hombre' ? styles.generoActive : ''}`}
@@ -144,7 +153,15 @@ export default function Catalogo() {
           >
             Mujer
           </button>
+          <button
+            className={`${styles.generoBtn} ${styles.generoBtnCorp} ${genero === 'Corporativo' ? styles.generoActive : ''}`}
+            onClick={() => cambiarGenero('Corporativo')}
+          >
+            Línea Corporativa
+          </button>
         </div>
+
+        
 
         {/* Filtros por categoría */}
         <div className={styles.filters}>
@@ -162,7 +179,9 @@ export default function Catalogo() {
         <div ref={gridRef} className={`${styles.grid} reveal`}>
           {visible.length === 0 ? (
             <p style={{ color: '#888', gridColumn: '1/-1', textAlign: 'center', padding: '2rem' }}>
-              No hay productos disponibles en esta categoría.
+              {isCorporativo
+                ? 'Próximamente productos de línea corporativa. Contáctanos por WhatsApp para cotizar.'
+                : 'No hay productos disponibles en esta categoría.'}
             </p>
           ) : (
             visible.map(p => (

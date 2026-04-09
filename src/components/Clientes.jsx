@@ -31,7 +31,7 @@ export default function Clientes() {
 
       <div className={styles.stats}>
         {[
-          { num: '8+',   label: 'Clientes activos'      },
+          { num: '50+',   label: 'Clientes activos'      },
           { num: '10',   label: 'Años de experiencia'   },
           { num: '100%', label: 'Satisfacción'          },
         ].map(s => (

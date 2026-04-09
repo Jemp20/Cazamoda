@@ -9,6 +9,8 @@ const stats = [
 const heroImages = [
   { src: '/Imagen3.jpeg', alt: 'Moda Cazamoda', span: true },
   { src: '/Imagen4.jpeg', alt: 'Colección' },
+  { src: '/Foto20.jpeg', alt: 'Moda Cazamoda', span: true },
+  { src: '/Foto21.jpg', alt: 'Colección' },
 ]
 
 export default function Hero() {

@@ -351,3 +351,11 @@
   .overlay p { display: none; }
   .card { height: 260px; }
 }
+
+/* ── Botón Línea Corporativa ── */
+.generoBtnCorp {
+  border-left: 1px solid var(--gold) !important;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
