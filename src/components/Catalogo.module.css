@@ -12,30 +12,34 @@
 .title em { color: var(--gold); font-style: italic; }
 .line { width: 50px; height: 1px; background: var(--gold); margin: 1.5rem auto 0; display: block; }
 
-/* ── Selector Hombre / Mujer ── */
+/* ── Selector Hombre / Mujer / Corporativo ── */
 .generoSelector {
   display: flex;
   justify-content: center;
   gap: 0;
   margin-bottom: 2rem;
+  flex-wrap: nowrap;
+  width: 100%;
 }
 
 .generoBtn {
-  padding: 0.75rem 3rem;
+  flex: 1;
+  padding: 0.75rem 0.5rem;
   font-family: 'Jost', sans-serif;
   font-size: 0.72rem;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   font-weight: 500;
   border: 1px solid var(--gold);
+  border-right: none;
   background: transparent;
   color: var(--gold);
   cursor: pointer;
   transition: all 0.3s;
-  position: relative;
+  text-align: center;
+  line-height: 1.3;
 }
-
-.generoBtn:first-child { border-right: none; }
+.generoBtn:last-child { border-right: 1px solid var(--gold); }
 .generoBtn:hover { background: var(--gold); color: #fff; }
 .generoActive { background: var(--gold) !important; color: #fff !important; }
 
@@ -336,20 +340,32 @@
   padding-bottom: 8px;
 }
 
-@media (max-width: 640px) {
-  .modalBox { flex-direction: column; max-height: 95vh; }
-  .modalMain { flex: 0 0 55vw; }
-  .modalInfo { padding: 1.2rem 1.2rem 1.5rem; }
-  .modalImg { max-height: 55vw; }
-  .grid { grid-template-columns: 1fr 1fr; }
-  .card { aspect-ratio: 2 / 3; }
-}
-
+/* ── MOBILE ── */
 @media (max-width: 768px) {
+  .section { padding: 80px 4%; }
+
+  .generoSelector { margin-bottom: 1.5rem; }
+
+  .generoBtn {
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    padding: 0.7rem 0.3rem;
+  }
+
   .overlay { opacity: 1; padding: 1rem; }
   .overlay h3 { font-size: 1rem; }
   .overlay p { display: none; }
   .card { height: 260px; }
+
+  .grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+}
+
+@media (max-width: 640px) {
+  .modalBox { flex-direction: column; max-height: 95vh; }
+  .modalMain { flex: 0 0 auto; }
+  .modalInfo { padding: 1rem 1rem 1.5rem; }
+  .modalImg { max-height: 45vw; width: 100%; }
+  .card { aspect-ratio: 2 / 3; height: auto; }
 }
 
 /* ── SWATCHES EN TARJETA ── */
@@ -400,9 +416,7 @@
   color: rgba(255,255,255,0.45);
   margin: 0 0 0.6rem;
 }
-.modalColorsLabel strong {
-  color: #c9a96e;
-}
+.modalColorsLabel strong { color: #c9a96e; }
 
 .modalSwatches {
   display: flex;
@@ -427,7 +441,6 @@
   transform: scale(1.1);
 }
 
-/* Miniaturas por color en modal */
 .modalColorThumbs {
   display: flex;
   gap: 6px;
@@ -453,7 +466,5 @@
   transition: opacity 0.2s;
 }
 .modalColorThumb:hover img { opacity: 0.85; }
-.modalColorThumbActive {
-  border-color: #c9a96e;
-}
+.modalColorThumbActive { border-color: #c9a96e; }
 .modalColorThumbActive img { opacity: 1; }
