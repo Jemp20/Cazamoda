@@ -422,3 +422,112 @@
   text-transform: uppercase;
   margin-top: 2px;
 }
+
+/* ── TALLAS ── */
+.tallasGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 0.75rem;
+}
+
+.tallaBtn {
+  padding: 5px 12px;
+  border: 1px solid #2a2a2a;
+  background: transparent;
+  color: #777;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 2px;
+}
+.tallaBtn:hover { border-color: #c9a96e; color: #c9a96e; }
+.tallaActive { background: #c9a96e !important; border-color: #c9a96e !important; color: #111 !important; font-weight: 600; }
+
+.tallaCustomRow {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.tallaCustomInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #2a2a2a;
+  color: #ccc;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.75rem;
+  padding: 6px 0;
+  outline: none;
+  letter-spacing: 0.1em;
+}
+.tallaCustomInput::placeholder { color: #444; }
+.tallaCustomInput:focus { border-bottom-color: #c9a96e; }
+
+.tallaCustomBtn {
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  color: #c9a96e;
+  width: 28px;
+  height: 28px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.tallaCustomBtn:hover { background: rgba(201,169,110,0.1); border-color: #c9a96e; }
+
+/* ── TALLAS POR COLOR ── */
+.colorItemWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.colorItemBtns {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.colorEditTallas {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 4px;
+  transition: transform 0.15s;
+}
+.colorEditTallas:hover { transform: scale(1.2); }
+
+.colorTallasInfo {
+  font-size: 0.62rem;
+  color: #555;
+  letter-spacing: 0.06em;
+  margin-left: 4px;
+}
+
+.colorTallasPanel {
+  background: #0e0e0e;
+  border: 1px dashed #2a2a2a;
+  border-radius: 3px;
+  padding: 0.75rem;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.colorTallasPanelTitle {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #c9a96e;
+  margin: 0 0 0.6rem;
+}

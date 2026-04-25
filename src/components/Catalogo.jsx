@@ -9,7 +9,6 @@ const filtersHombre      = ['Todo', 'Camisas', 'Jeans', 'Chaquetas', 'Conjuntos'
 const filtersMujer       = ['Todo', 'Blusas', 'Shorts', 'Vestidos', 'Camisas', 'Pantalón', 'Camisa', 'Falda', 'Short', 'Vestido', 'Enterizo']
 const filtersCorporativo = ['Todo', 'Administrativo', 'Operativo e Industrial', 'Hospitalarios', 'Hostelería', 'Servicio General', 'Promo Colegiales']
 
-// Tarjeta con swatches de color
 function ProductCard({ p, onClick }) {
   const hasColors = p.colores && p.colores.length > 0
   const [colorIdx, setColorIdx] = useState(0)
@@ -25,7 +24,6 @@ function ProductCard({ p, onClick }) {
     <div className={styles.card} onClick={() => onClick(p, colorIdx)}>
       {p.tag && <span className={styles.cardTag}>{p.tag}</span>}
       <img src={imgActual} alt={p.name} loading="lazy" />
-
       {hasColors && (
         <div className={styles.cardSwatches}>
           {p.colores.map((c, i) => (
@@ -33,16 +31,12 @@ function ProductCard({ p, onClick }) {
               key={i}
               title={c.nombre}
               className={`${styles.cardSwatch} ${colorIdx === i ? styles.cardSwatchActive : ''}`}
-              style={{
-                background: c.hex,
-                border: c.hex === '#FFFFFF' ? '1px solid rgba(255,255,255,0.4)' : 'none'
-              }}
+              style={{ background: c.hex, border: c.hex === '#FFFFFF' ? '1px solid rgba(255,255,255,0.4)' : 'none' }}
               onClick={(e) => handleSwatchClick(e, i)}
             />
           ))}
         </div>
       )}
-
       <div className={styles.overlay}>
         <div>
           <h3>{p.name}</h3>
@@ -62,15 +56,17 @@ function ProductCard({ p, onClick }) {
 
 export default function Catalogo() {
   const { productos } = useProductos()
-  const [genero, setGenero]         = useState('Hombre')
-  const [active, setActive]         = useState('Todo')
-  const [modalOpen, setModalOpen]   = useState(false)
-  const [modalIndex, setModalIndex] = useState(0)
-  const [modalItems, setModalItems] = useState([])
+  const [genero, setGenero]               = useState('Hombre')
+  const [active, setActive]               = useState('Todo')
+  const [modalOpen, setModalOpen]         = useState(false)
+  const [modalIndex, setModalIndex]       = useState(0)
+  const [modalItems, setModalItems]       = useState([])
   const [modalColorIdx, setModalColorIdx] = useState(0)
-  const [formOpen, setFormOpen]     = useState(false)
-  const [formError, setFormError]   = useState(false)
-  const [loading, setLoading]       = useState(false)
+  const [tallaSeleccionada, setTallaSeleccionada] = useState(null)
+  const [formOpen, setFormOpen]           = useState(false)
+  const [formError, setFormError]         = useState(false)
+  const [tallaError, setTallaError]       = useState(false)
+  const [loading, setLoading]             = useState(false)
 
   const [datos, setDatos] = useState({
     nombre: '', telefono: '', cedula: '', prenda: '', precio: '', direccion: ''
@@ -87,13 +83,9 @@ export default function Catalogo() {
     ? filtersMujer
     : filtersCorporativo
 
-  const cambiarGenero = (g) => {
-    setGenero(g)
-    setActive('Todo')
-  }
+  const cambiarGenero = (g) => { setGenero(g); setActive('Todo') }
 
   const disponibles = productos.filter(p => p.disponible && (p.genero === genero || !p.genero))
-
   const visible = active === 'Todo'
     ? disponibles
     : disponibles.filter(p => p.category === active)
@@ -104,6 +96,7 @@ export default function Catalogo() {
     setModalItems(siblings)
     setModalIndex(idx)
     setModalColorIdx(colorIdx)
+    setTallaSeleccionada(null)
     setModalOpen(true)
   }
 
@@ -111,17 +104,21 @@ export default function Catalogo() {
     setModalOpen(false)
     setFormOpen(false)
     setFormError(false)
+    setTallaError(false)
     setLoading(false)
+    setTallaSeleccionada(null)
   }
 
   const prev = useCallback(() => {
     setModalIndex(i => (i - 1 + modalItems.length) % modalItems.length)
     setModalColorIdx(0)
+    setTallaSeleccionada(null)
   }, [modalItems.length])
 
   const next = useCallback(() => {
     setModalIndex(i => (i + 1) % modalItems.length)
     setModalColorIdx(0)
+    setTallaSeleccionada(null)
   }, [modalItems.length])
 
   useEffect(() => {
@@ -140,16 +137,36 @@ export default function Catalogo() {
     return () => { document.body.style.overflow = '' }
   }, [modalOpen])
 
-  const current = modalItems[modalIndex]
-  const hasColors = current?.colores?.length > 0
-  const imgModal  = hasColors ? current.colores[modalColorIdx].img : current?.img
+  const current          = modalItems[modalIndex]
+  const hasColors        = current?.colores?.length > 0
   const colorModalActual = hasColors ? current.colores[modalColorIdx] : null
+  const imgModal         = hasColors ? colorModalActual.img : current?.img
+
+  // Tallas: si tiene colores, usa las del color seleccionado; si no, las generales
+  const tallasActuales = hasColors
+    ? (colorModalActual?.tallas || [])
+    : (current?.tallas || [])
+
+  const hasTallas = tallasActuales.length > 0
+
+  // Resetear talla cuando cambia el color
+  const handleColorChange = (i) => {
+    setModalColorIdx(i)
+    setTallaSeleccionada(null)
+    setTallaError(false)
+  }
 
   const abrirFormulario = () => {
+    if (hasTallas && !tallaSeleccionada) {
+      setTallaError(true)
+      return
+    }
+    setTallaError(false)
     const colorInfo = colorModalActual ? ` — ${colorModalActual.nombre}` : ''
+    const tallaInfo = tallaSeleccionada ? ` — Talla ${tallaSeleccionada}` : ''
     setDatos(prev => ({
       ...prev,
-      prenda: (current?.name || '') + colorInfo,
+      prenda: (current?.name || '') + colorInfo + tallaInfo,
       precio: current?.precioMin
         ? `$${Number(current.precioMin).toLocaleString('es-CO')}`
         : ''
@@ -177,10 +194,7 @@ export default function Catalogo() {
       `Dirección: ${datos.direccion}`
 
     setTimeout(() => {
-      window.open(
-        `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`,
-        '_blank'
-      )
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank')
       setLoading(false)
       closeModal()
       setDatos({ nombre: '', telefono: '', cedula: '', prenda: '', precio: '', direccion: '' })
@@ -196,29 +210,12 @@ export default function Catalogo() {
           <span className={styles.line} />
         </div>
 
-        {/* Selector Hombre / Mujer / Línea Corporativa */}
         <div className={styles.generoSelector}>
-          <button
-            className={`${styles.generoBtn} ${genero === 'Hombre' ? styles.generoActive : ''}`}
-            onClick={() => cambiarGenero('Hombre')}
-          >
-            Hombre
-          </button>
-          <button
-            className={`${styles.generoBtn} ${genero === 'Mujer' ? styles.generoActive : ''}`}
-            onClick={() => cambiarGenero('Mujer')}
-          >
-            Mujer
-          </button>
-          <button
-            className={`${styles.generoBtn} ${styles.generoBtnCorp} ${genero === 'Corporativo' ? styles.generoActive : ''}`}
-            onClick={() => cambiarGenero('Corporativo')}
-          >
-            Línea Corporativa
-          </button>
+          <button className={`${styles.generoBtn} ${genero === 'Hombre' ? styles.generoActive : ''}`} onClick={() => cambiarGenero('Hombre')}>Hombre</button>
+          <button className={`${styles.generoBtn} ${genero === 'Mujer' ? styles.generoActive : ''}`} onClick={() => cambiarGenero('Mujer')}>Mujer</button>
+          <button className={`${styles.generoBtn} ${styles.generoBtnCorp} ${genero === 'Corporativo' ? styles.generoActive : ''}`} onClick={() => cambiarGenero('Corporativo')}>Línea Corporativa</button>
         </div>
 
-        {/* Filtros por categoría */}
         <div className={styles.filters}>
           {filters.map(f => (
             <button
@@ -239,9 +236,7 @@ export default function Catalogo() {
                 : 'No hay productos disponibles en esta categoría.'}
             </p>
           ) : (
-            visible.map(p => (
-              <ProductCard key={p.id} p={p} onClick={openModal} />
-            ))
+            visible.map(p => <ProductCard key={p.id} p={p} onClick={openModal} />)
           )}
         </div>
       </section>
@@ -256,7 +251,13 @@ export default function Catalogo() {
             <div className={styles.modalInfo}>
               <h3 className={styles.modalName}>{current.name}</h3>
 
-              {/* Selector de color en el modal */}
+              {current.precioMin && (
+                <p className={styles.modalPrice}>
+                  ${Number(current.precioMin).toLocaleString('es-CO')}
+                </p>
+              )}
+
+              {/* Selector de color */}
               {hasColors && (
                 <div className={styles.modalColors}>
                   <p className={styles.modalColorsLabel}>
@@ -268,11 +269,8 @@ export default function Catalogo() {
                         key={i}
                         title={c.nombre}
                         className={`${styles.modalSwatch} ${modalColorIdx === i ? styles.modalSwatchActive : ''}`}
-                        style={{
-                          background: c.hex,
-                          border: c.hex === '#FFFFFF' ? '1px solid rgba(255,255,255,0.3)' : 'none'
-                        }}
-                        onClick={() => setModalColorIdx(i)}
+                        style={{ background: c.hex, border: c.hex === '#FFFFFF' ? '1px solid rgba(255,255,255,0.3)' : 'none' }}
+                        onClick={() => handleColorChange(i)}
                       />
                     ))}
                   </div>
@@ -281,12 +279,33 @@ export default function Catalogo() {
                       <button
                         key={i}
                         className={`${styles.modalColorThumb} ${modalColorIdx === i ? styles.modalColorThumbActive : ''}`}
-                        onClick={() => setModalColorIdx(i)}
+                        onClick={() => handleColorChange(i)}
                       >
                         <img src={c.img} alt={c.nombre} />
                       </button>
                     ))}
                   </div>
+                </div>
+              )}
+
+              {/* Selector de talla — cambia según el color seleccionado */}
+              {hasTallas && (
+                <div className={styles.modalTallas}>
+                  <p className={styles.modalTallasLabel}>
+                    Talla: <strong>{tallaSeleccionada || 'Selecciona una'}</strong>
+                  </p>
+                  <div className={styles.modalTallasGrid}>
+                    {tallasActuales.map(t => (
+                      <button
+                        key={t}
+                        className={`${styles.modalTallaBtn} ${tallaSeleccionada === t ? styles.modalTallaActive : ''}`}
+                        onClick={() => { setTallaSeleccionada(t); setTallaError(false) }}
+                      >
+                        {t}
+                      </button>
+                    ))}
+                  </div>
+                  {tallaError && <p className={styles.tallaError}>Por favor selecciona una talla</p>}
                 </div>
               )}
 
@@ -303,13 +322,9 @@ export default function Catalogo() {
                       <input name={key} value={datos[key]} onChange={handleChange} />
                     </div>
                   ))}
-                  {formError && (
-                    <p className={styles.waError}>Por favor completa todos los campos.</p>
-                  )}
+                  {formError && <p className={styles.waError}>Por favor completa todos los campos.</p>}
                   <div className={styles.waActions}>
-                    <button className={styles.boldBtn} onClick={() => setFormOpen(false)}>
-                      Cancelar
-                    </button>
+                    <button className={styles.boldBtn} onClick={() => setFormOpen(false)}>Cancelar</button>
                     <button className={styles.boldBtn} onClick={enviarWhatsApp} disabled={loading}>
                       {loading ? 'Enviando...' : 'Confirmar pedido'}
                     </button>
