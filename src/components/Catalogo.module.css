@@ -12,20 +12,19 @@
 .title em { color: var(--gold); font-style: italic; }
 .line { width: 50px; height: 1px; background: var(--gold); margin: 1.5rem auto 0; display: block; }
 
-/* ── Selector Hombre / Mujer / Corporativo ── */
+/* ── Selector Hombre / Mujer ── */
 .generoSelector {
   display: flex;
   justify-content: center;
   gap: 0;
   margin-bottom: 2rem;
-  flex-wrap: wrap;
 }
 
 .generoBtn {
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 3rem;
   font-family: 'Jost', sans-serif;
   font-size: 0.72rem;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   font-weight: 500;
   border: 1px solid var(--gold);
@@ -33,48 +32,28 @@
   color: var(--gold);
   cursor: pointer;
   transition: all 0.3s;
-  flex: 1;
-  min-width: 100px;
-  text-align: center;
+  position: relative;
 }
 
 .generoBtn:first-child { border-right: none; }
 .generoBtn:hover { background: var(--gold); color: #fff; }
 .generoActive { background: var(--gold) !important; color: #fff !important; }
 
-.generoBtnCorp {
-  border-left: 1px solid var(--gold) !important;
-}
-
 /* ── Filtros de categoría ── */
 .filters {
-  display: flex;
-  justify-content: center;
-  gap: 0.4rem;
-  margin-bottom: 3rem;
-  flex-wrap: wrap;
-  padding: 0 1rem;
+  display: flex; justify-content: center; gap: 0.5rem;
+  margin-bottom: 3rem; flex-wrap: wrap;
 }
-
 .filterBtn {
-  padding: 7px 14px;
-  border: 1px solid var(--gold);
-  background: transparent;
-  cursor: pointer;
-  font-family: 'Jost', sans-serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: 500;
-  color: var(--gold);
-  transition: all 0.25s;
-  white-space: nowrap;
+  padding: 8px 22px; border: 1px solid var(--gold);
+  background: transparent; cursor: pointer;
+  font-family: 'Jost', sans-serif; font-size: 0.72rem;
+  letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500;
+  color: var(--gold); transition: all 0.25s;
 }
-
 .filterBtn:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
-.filterActive { background: var(--gold) !important; color: #fff !important; border-color: var(--gold) !important; }
+.filterActive    { background: var(--gold) !important; color: #fff !important; border-color: var(--gold) !important; }
 
-/* ── Grid ── */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -93,7 +72,6 @@
   height: 100%;
   object-fit: cover;
   object-position: center top;
-  transition: transform 0.4s;
 }
 
 .card:hover img { transform: scale(1.06); }
@@ -126,16 +104,7 @@
   align-self: flex-end;
 }
 
-.cardPrice {
-  display: inline-block;
-  margin-top: 6px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #c9a96e;
-  letter-spacing: 0.04em;
-}
-
-/* ── Modal ── */
+/* ── Modal backdrop ── */
 .modalBackdrop {
   position: fixed; inset: 0; z-index: 1000;
   background: rgba(10, 10, 10, 0.88);
@@ -218,14 +187,6 @@
   letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.2rem;
 }
 
-.modalPrice {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #c9a96e;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.5rem;
-}
-
 .thumbs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
 .thumb {
   width: 64px; height: 80px;
@@ -252,7 +213,23 @@
   letter-spacing: 0.1em;
 }
 
-/* ── WhatsApp Form ── */
+.cardPrice {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #c9a96e;
+  letter-spacing: 0.04em;
+}
+
+.modalPrice {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #c9a96e;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
 .boldBtn {
   width: 100%;
   background: #c9a96e;
@@ -359,7 +336,15 @@
   padding-bottom: 8px;
 }
 
-/* ── Responsive ── */
+@media (max-width: 640px) {
+  .modalBox { flex-direction: column; max-height: 95vh; }
+  .modalMain { flex: 0 0 55vw; }
+  .modalInfo { padding: 1.2rem 1.2rem 1.5rem; }
+  .modalImg { max-height: 55vw; }
+  .grid { grid-template-columns: 1fr 1fr; }
+  .card { aspect-ratio: 2 / 3; }
+}
+
 @media (max-width: 768px) {
   .overlay { opacity: 1; padding: 1rem; }
   .overlay h3 { font-size: 1rem; }
@@ -367,15 +352,108 @@
   .card { height: 260px; }
 }
 
-@media (max-width: 640px) {
-  .section { padding: 80px 4%; }
-  .modalBox { flex-direction: column; max-height: 95vh; }
-  .modalMain { flex: 0 0 55vw; }
-  .modalInfo { padding: 1.2rem 1.2rem 1.5rem; }
-  .modalImg { max-height: 55vw; }
-  .grid { grid-template-columns: 1fr 1fr; }
-  .card { height: 220px; }
-  .generoBtn { flex: 1 1 30%; font-size: 0.65rem; padding: 0.6rem 0.8rem; }
-  .filters { padding: 0 0.5rem; gap: 0.3rem; }
-  .filterBtn { padding: 6px 10px; font-size: 0.6rem; letter-spacing: 0.08em; }
+/* ── SWATCHES EN TARJETA ── */
+.cardSwatches {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  gap: 5px;
+  z-index: 3;
+  flex-wrap: wrap;
+  max-width: 70%;
 }
+
+.cardSwatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  transition: transform 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+.cardSwatch:hover { transform: scale(1.25); }
+.cardSwatchActive {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #c9a96e;
+  transform: scale(1.15);
+}
+
+.overlayColor {
+  font-size: 0.65rem;
+  color: #c9a96e;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+/* ── SELECTOR DE COLOR EN MODAL ── */
+.modalColors {
+  margin: 0.5rem 0 1rem;
+}
+
+.modalColorsLabel {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin: 0 0 0.6rem;
+}
+.modalColorsLabel strong {
+  color: #c9a96e;
+}
+
+.modalSwatches {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.modalSwatch {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  transition: transform 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+.modalSwatch:hover { transform: scale(1.2); }
+.modalSwatchActive {
+  box-shadow: 0 0 0 2px #1a1a1a, 0 0 0 4px #c9a96e;
+  transform: scale(1.1);
+}
+
+/* Miniaturas por color en modal */
+.modalColorThumbs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.modalColorThumb {
+  width: 52px;
+  height: 62px;
+  border: 2px solid transparent;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  background: transparent;
+  transition: border-color 0.2s;
+  border-radius: 2px;
+}
+.modalColorThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+.modalColorThumb:hover img { opacity: 0.85; }
+.modalColorThumbActive {
+  border-color: #c9a96e;
+}
+.modalColorThumbActive img { opacity: 1; }

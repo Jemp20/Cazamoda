@@ -6,14 +6,14 @@ import {
 } from 'firebase/firestore'
 
 const DEFAULT_PRODUCTS = [
-  { name: 'Camisa Clásica',     category: 'Camisas',   genero: 'Hombre', tag: 'Nuevo',   desc: 'Confección a medida', precioMin: 40000, img: '/Camisa.jpg', disponible: true },
-  { name: 'Jean Urbano',         category: 'Jeans',     genero: 'Hombre', tag: '',        desc: 'Confort fit',         precioMin: 55000, img: '/Jean-Urbano.jpg', disponible: true },
-  { name: 'Chaqueta Premium',    category: 'Chaquetas', genero: 'Hombre', tag: 'Popular', desc: 'Edición limitada',    precioMin: 90000, img: '/Chaqueta-Premium.jpg', disponible: true },
-  { name: 'Conjunto Casual',     category: 'Conjuntos', genero: 'Hombre', tag: '',        desc: 'Tendencia',           precioMin: 70000, img: '/Conjunto-Casual.jpg', disponible: true },
-  { name: 'Vestido Moderno',     category: 'Vestidos',  genero: 'Mujer',  tag: '',        desc: 'Diseño exclusivo',    precioMin: 65000, img: '/Vestido-Moderno.jpg', disponible: true },
-  { name: 'Blusa Contemporánea', category: 'Blusas',    genero: 'Mujer',  tag: 'Nuevo',   desc: 'Tallas disponibles',  precioMin: 35000, img: '/Blusa-Contemporánea.jpg', disponible: true },
-  { name: 'Short Casual',        category: 'Shorts',    genero: 'Mujer',  tag: '',        desc: 'Cómodo y moderno',    precioMin: 30000, img: '/Short-Casual.jpg', disponible: true },
-  { name: 'Camisa Mujer',        category: 'Camisas',   genero: 'Mujer',  tag: '',        desc: 'Estilo femenino',     precioMin: 38000, img: '/Camisa-Mujer.jpg', disponible: true },
+  { name: 'Camisa Clásica',     category: 'Camisas',   genero: 'Hombre', tag: 'Nuevo',   desc: 'Confección a medida', precioMin: 40000, img: '/Camisa.jpg',              disponible: true, colores: [] },
+  { name: 'Jean Urbano',         category: 'Jeans',     genero: 'Hombre', tag: '',        desc: 'Confort fit',         precioMin: 55000, img: '/Jean-Urbano.jpg',          disponible: true, colores: [] },
+  { name: 'Chaqueta Premium',    category: 'Chaquetas', genero: 'Hombre', tag: 'Popular', desc: 'Edición limitada',    precioMin: 90000, img: '/Chaqueta-Premium.jpg',    disponible: true, colores: [] },
+  { name: 'Conjunto Casual',     category: 'Conjuntos', genero: 'Hombre', tag: '',        desc: 'Tendencia',           precioMin: 70000, img: '/Conjunto-Casual.jpg',     disponible: true, colores: [] },
+  { name: 'Vestido Moderno',     category: 'Vestidos',  genero: 'Mujer',  tag: '',        desc: 'Diseño exclusivo',    precioMin: 65000, img: '/Vestido-Moderno.jpg',     disponible: true, colores: [] },
+  { name: 'Blusa Contemporánea', category: 'Blusas',    genero: 'Mujer',  tag: 'Nuevo',   desc: 'Tallas disponibles',  precioMin: 35000, img: '/Blusa-Contemporánea.jpg', disponible: true, colores: [] },
+  { name: 'Short Casual',        category: 'Shorts',    genero: 'Mujer',  tag: '',        desc: 'Cómodo y moderno',    precioMin: 30000, img: '/Short-Casual.jpg',        disponible: true, colores: [] },
+  { name: 'Camisa Mujer',        category: 'Camisas',   genero: 'Mujer',  tag: '',        desc: 'Estilo femenino',     precioMin: 38000, img: '/Camisa-Mujer.jpg',        disponible: true, colores: [] },
 ]
 
 const ProductosContext = createContext(null)
@@ -31,7 +31,11 @@ export function ProductosProvider({ children }) {
           await addDoc(collection(db, COL), p)
         }
       } else {
-        const data = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+        const data = snap.docs.map(d => ({
+          id: d.id,
+          ...d.data(),
+          colores: d.data().colores || []   // compatibilidad con productos existentes
+        }))
         setProductos(data)
         setCargando(false)
       }
@@ -40,7 +44,7 @@ export function ProductosProvider({ children }) {
   }, [])
 
   const agregar = (prod) =>
-    addDoc(collection(db, COL), { ...prod, disponible: true })
+    addDoc(collection(db, COL), { ...prod, disponible: true, colores: prod.colores || [] })
 
   const eliminar = (id) =>
     deleteDoc(doc(db, COL, id))
@@ -49,7 +53,7 @@ export function ProductosProvider({ children }) {
     updateDoc(doc(db, COL, id), { disponible: !actual })
 
   const editar = (id, datos) =>
-    updateDoc(doc(db, COL, id), datos)
+    updateDoc(doc(db, COL, id), { ...datos, colores: datos.colores || [] })
 
   return (
     <ProductosContext.Provider value={{ productos, agregar, eliminar, toggleDisponible, editar, cargando }}>

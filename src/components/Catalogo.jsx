@@ -9,7 +9,56 @@ const filtersHombre      = ['Todo', 'Camisas', 'Jeans', 'Chaquetas', 'Conjuntos'
 const filtersMujer       = ['Todo', 'Blusas', 'Shorts', 'Vestidos', 'Camisas', 'Pantalón', 'Camisa', 'Falda', 'Short', 'Vestido', 'Enterizo']
 const filtersCorporativo = ['Todo', 'Administrativo', 'Operativo e Industrial', 'Hospitalarios', 'Hostelería', 'Servicio General', 'Promo Colegiales']
 
+// Tarjeta con swatches de color
+function ProductCard({ p, onClick }) {
+  const hasColors = p.colores && p.colores.length > 0
+  const [colorIdx, setColorIdx] = useState(0)
+  const imgActual = hasColors ? p.colores[colorIdx].img : p.img
+  const colorActual = hasColors ? p.colores[colorIdx] : null
 
+  const handleSwatchClick = (e, i) => {
+    e.stopPropagation()
+    setColorIdx(i)
+  }
+
+  return (
+    <div className={styles.card} onClick={() => onClick(p, colorIdx)}>
+      {p.tag && <span className={styles.cardTag}>{p.tag}</span>}
+      <img src={imgActual} alt={p.name} loading="lazy" />
+
+      {hasColors && (
+        <div className={styles.cardSwatches}>
+          {p.colores.map((c, i) => (
+            <button
+              key={i}
+              title={c.nombre}
+              className={`${styles.cardSwatch} ${colorIdx === i ? styles.cardSwatchActive : ''}`}
+              style={{
+                background: c.hex,
+                border: c.hex === '#FFFFFF' ? '1px solid rgba(255,255,255,0.4)' : 'none'
+              }}
+              onClick={(e) => handleSwatchClick(e, i)}
+            />
+          ))}
+        </div>
+      )}
+
+      <div className={styles.overlay}>
+        <div>
+          <h3>{p.name}</h3>
+          {colorActual && <p className={styles.overlayColor}>{colorActual.nombre}</p>}
+          <p>{p.desc}</p>
+          {p.precioMin && (
+            <span className={styles.cardPrice}>
+              ${Number(p.precioMin).toLocaleString('es-CO')}
+            </span>
+          )}
+        </div>
+        <span className={styles.viewIcon}>⊕</span>
+      </div>
+    </div>
+  )
+}
 
 export default function Catalogo() {
   const { productos } = useProductos()
@@ -18,6 +67,7 @@ export default function Catalogo() {
   const [modalOpen, setModalOpen]   = useState(false)
   const [modalIndex, setModalIndex] = useState(0)
   const [modalItems, setModalItems] = useState([])
+  const [modalColorIdx, setModalColorIdx] = useState(0)
   const [formOpen, setFormOpen]     = useState(false)
   const [formError, setFormError]   = useState(false)
   const [loading, setLoading]       = useState(false)
@@ -48,11 +98,12 @@ export default function Catalogo() {
     ? disponibles
     : disponibles.filter(p => p.category === active)
 
-  const openModal = (product) => {
+  const openModal = (product, colorIdx = 0) => {
     const siblings = disponibles.filter(p => p.category === product.category)
     const idx = siblings.findIndex(p => p.id === product.id)
     setModalItems(siblings)
     setModalIndex(idx)
+    setModalColorIdx(colorIdx)
     setModalOpen(true)
   }
 
@@ -65,10 +116,12 @@ export default function Catalogo() {
 
   const prev = useCallback(() => {
     setModalIndex(i => (i - 1 + modalItems.length) % modalItems.length)
+    setModalColorIdx(0)
   }, [modalItems.length])
 
   const next = useCallback(() => {
     setModalIndex(i => (i + 1) % modalItems.length)
+    setModalColorIdx(0)
   }, [modalItems.length])
 
   useEffect(() => {
@@ -88,11 +141,15 @@ export default function Catalogo() {
   }, [modalOpen])
 
   const current = modalItems[modalIndex]
+  const hasColors = current?.colores?.length > 0
+  const imgModal  = hasColors ? current.colores[modalColorIdx].img : current?.img
+  const colorModalActual = hasColors ? current.colores[modalColorIdx] : null
 
   const abrirFormulario = () => {
+    const colorInfo = colorModalActual ? ` — ${colorModalActual.nombre}` : ''
     setDatos(prev => ({
       ...prev,
-      prenda: current?.name || '',
+      prenda: (current?.name || '') + colorInfo,
       precio: current?.precioMin
         ? `$${Number(current.precioMin).toLocaleString('es-CO')}`
         : ''
@@ -161,8 +218,6 @@ export default function Catalogo() {
           </button>
         </div>
 
-        
-
         {/* Filtros por categoría */}
         <div className={styles.filters}>
           {filters.map(f => (
@@ -185,22 +240,7 @@ export default function Catalogo() {
             </p>
           ) : (
             visible.map(p => (
-              <div key={p.id} className={styles.card} onClick={() => openModal(p)}>
-                {p.tag && <span className={styles.cardTag}>{p.tag}</span>}
-                <img src={p.img} alt={p.name} loading="lazy" />
-                <div className={styles.overlay}>
-                  <div>
-                    <h3>{p.name}</h3>
-                    <p>{p.desc}</p>
-                    {p.precioMin && (
-                      <span className={styles.cardPrice}>
-                        ${Number(p.precioMin).toLocaleString('es-CO')}
-                      </span>
-                    )}
-                  </div>
-                  <span className={styles.viewIcon}>⊕</span>
-                </div>
-              </div>
+              <ProductCard key={p.id} p={p} onClick={openModal} />
             ))
           )}
         </div>
@@ -211,10 +251,45 @@ export default function Catalogo() {
           <div className={styles.modalBox} onClick={e => e.stopPropagation()}>
             <button className={styles.modalClose} onClick={closeModal}>✕</button>
             <div className={styles.modalMain}>
-              <img src={current.img} alt={current.name} className={styles.modalImg} />
+              <img src={imgModal} alt={current.name} className={styles.modalImg} />
             </div>
             <div className={styles.modalInfo}>
               <h3 className={styles.modalName}>{current.name}</h3>
+
+              {/* Selector de color en el modal */}
+              {hasColors && (
+                <div className={styles.modalColors}>
+                  <p className={styles.modalColorsLabel}>
+                    Color: <strong>{colorModalActual?.nombre}</strong>
+                  </p>
+                  <div className={styles.modalSwatches}>
+                    {current.colores.map((c, i) => (
+                      <button
+                        key={i}
+                        title={c.nombre}
+                        className={`${styles.modalSwatch} ${modalColorIdx === i ? styles.modalSwatchActive : ''}`}
+                        style={{
+                          background: c.hex,
+                          border: c.hex === '#FFFFFF' ? '1px solid rgba(255,255,255,0.3)' : 'none'
+                        }}
+                        onClick={() => setModalColorIdx(i)}
+                      />
+                    ))}
+                  </div>
+                  <div className={styles.modalColorThumbs}>
+                    {current.colores.map((c, i) => (
+                      <button
+                        key={i}
+                        className={`${styles.modalColorThumb} ${modalColorIdx === i ? styles.modalColorThumbActive : ''}`}
+                        onClick={() => setModalColorIdx(i)}
+                      >
+                        <img src={c.img} alt={c.nombre} />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {!formOpen ? (
                 <button className={styles.boldBtn} onClick={abrirFormulario}>
                   Pedir por WhatsApp

@@ -194,3 +194,231 @@
   transition: all 0.2s; margin-top: 0.4rem;
 }
 .cancelBtn:hover { border-color: #e07070; color: #e07070; }
+
+/* ── VARIANTES DE COLOR ── */
+.colorSection {
+  border: 1px solid #2a2a2a;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1.2rem;
+  background: #111;
+}
+
+.colorSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.colorSectionTitle {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #c9a96e;
+  font-weight: 600;
+}
+
+.colorSectionSub {
+  font-size: 0.68rem;
+  color: #555;
+  letter-spacing: 0.08em;
+}
+
+/* Lista de colores ya agregados */
+.colorList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.colorItem {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #1a1a1a;
+  border-radius: 3px;
+  padding: 0.4rem 0.6rem;
+}
+
+.colorThumb {
+  width: 40px;
+  height: 46px;
+  object-fit: cover;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.colorItemInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.colorSwatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.colorItemName {
+  font-size: 0.75rem;
+  color: #ccc;
+  letter-spacing: 0.06em;
+}
+
+.colorRemove {
+  background: transparent;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 4px;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+.colorRemove:hover { color: #d44; }
+
+/* Botón agregar color */
+.addColorBtn {
+  width: 100%;
+  background: transparent;
+  border: 1px dashed #2a2a2a;
+  color: #c9a96e;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  border-radius: 2px;
+}
+.addColorBtn:hover { border-color: #c9a96e; background: rgba(201,169,110,0.05); }
+
+/* Panel de nuevo color */
+.colorPanel {
+  background: #181818;
+  border: 1px solid #2a2a2a;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-top: 0.5rem;
+}
+
+.colorPanelTitle {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #c9a96e;
+  margin: 0 0 0.75rem;
+}
+
+/* Presets de color */
+.colorPresets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 0.85rem;
+}
+
+.presetDot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  padding: 0;
+  flex-shrink: 0;
+}
+.presetDot:hover { transform: scale(1.2); }
+.presetActive {
+  box-shadow: 0 0 0 2px #c9a96e;
+  transform: scale(1.15);
+}
+
+/* Fila nombre + color picker */
+.colorRow {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+.colorPicker {
+  width: 56px !important;
+  height: 38px !important;
+  padding: 2px !important;
+  border: 1px solid #2a2a2a !important;
+  background: #111 !important;
+  cursor: pointer !important;
+  border-radius: 3px !important;
+}
+
+/* Zona foto del color */
+.colorPhotoZone {
+  border: 1px dashed #2a2a2a;
+  border-radius: 3px;
+  cursor: pointer;
+  overflow: hidden;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.75rem 0;
+  transition: border-color 0.2s;
+}
+.colorPhotoZone:hover { border-color: #c9a96e; }
+
+.colorPhotoPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  color: #444;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.colorPhotoPreview {
+  width: 100%;
+  max-height: 150px;
+  object-fit: contain;
+  background: #111;
+}
+
+.colorPanelActions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Dots de color en tarjetas del grid admin */
+.cardColorDots {
+  position: absolute;
+  bottom: 6px;
+  left: 8px;
+  display: flex;
+  gap: 4px;
+  z-index: 2;
+}
+
+.cardColorDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.cardColoresInfo {
+  font-size: 0.63rem;
+  color: #c9a96e;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
