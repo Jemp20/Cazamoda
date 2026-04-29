@@ -37,13 +37,13 @@ function comprimirImagen(file) {
     reader.onload = (ev) => {
       const img = new Image()
       img.onload = () => {
-        const MAX = 800
+        const MAX = 400
         let w = img.width, h = img.height
         if (w > MAX) { h = Math.round((h * MAX) / w); w = MAX }
         const canvas = document.createElement('canvas')
         canvas.width = w; canvas.height = h
         canvas.getContext('2d').drawImage(img, 0, 0, w, h)
-        resolve(canvas.toDataURL('image/jpeg', 0.75))
+        resolve(canvas.toDataURL('image/jpeg', 0.55))
       }
       img.src = ev.target.result
     }
