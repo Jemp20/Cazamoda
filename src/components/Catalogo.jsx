@@ -22,33 +22,34 @@ function ProductCard({ p, onClick }) {
 
   return (
     <div className={styles.card} onClick={() => onClick(p, colorIdx)}>
-      {p.tag && <span className={styles.cardTag}>{p.tag}</span>}
-      <img src={imgActual} alt={p.name} loading="lazy" />
-      {hasColors && (
-        <div className={styles.cardSwatches}>
-          {p.colores.map((c, i) => (
-            <button
-              key={i}
-              title={c.nombre}
-              className={`${styles.cardSwatch} ${colorIdx === i ? styles.cardSwatchActive : ''}`}
-              style={{ background: c.hex, border: c.hex === '#FFFFFF' ? '1px solid rgba(255,255,255,0.4)' : 'none' }}
-              onClick={(e) => handleSwatchClick(e, i)}
-            />
-          ))}
+      <div className={styles.imgWrap}>
+        {p.tag && <span className={styles.cardTag}>{p.tag}</span>}
+        <img src={imgActual} alt={p.name} loading="lazy" />
+        {hasColors && (
+          <div className={styles.cardSwatches}>
+            {p.colores.map((c, i) => (
+              <button
+                key={i}
+                title={c.nombre}
+                className={`${styles.cardSwatch} ${colorIdx === i ? styles.cardSwatchActive : ''}`}
+                style={{ background: c.hex, border: c.hex === '#FFFFFF' ? '1px solid rgba(0,0,0,0.2)' : 'none' }}
+                onClick={(e) => handleSwatchClick(e, i)}
+              />
+            ))}
+          </div>
+        )}
+        <div className={styles.overlay}>
+          <span className={styles.viewIcon}>⊕</span>
         </div>
-      )}
-      <div className={styles.overlay}>
-        <div>
-          <h3>{p.name}</h3>
-          {colorActual && <p className={styles.overlayColor}>{colorActual.nombre}</p>}
-          <p>{p.desc}</p>
-          {p.precioMin && (
-            <span className={styles.cardPrice}>
-              ${Number(p.precioMin).toLocaleString('es-CO')}
-            </span>
-          )}
-        </div>
-        <span className={styles.viewIcon}>⊕</span>
+      </div>
+      <div className={styles.cardInfo}>
+        <span className={styles.cardName}>{p.name}</span>
+        {colorActual && <span className={styles.cardColorName}>{colorActual.nombre}</span>}
+        {p.precioMin && (
+          <span className={styles.cardInfoPrice}>
+            ${Number(p.precioMin).toLocaleString('es-CO')}
+          </span>
+        )}
       </div>
     </div>
   )

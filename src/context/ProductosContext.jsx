@@ -24,22 +24,38 @@ export function ProductosProvider({ children }) {
   const [cargando, setCargando]   = useState(true)
 
   useEffect(() => {
-    const unsub = onSnapshot(collection(db, COL), async (snap) => {
-      if (snap.empty) {
-        // Primera vez: subir productos por defecto a Firestore
-        for (const p of DEFAULT_PRODUCTS) {
-          await addDoc(collection(db, COL), p)
+    let sembrado = false
+
+    const unsub = onSnapshot(
+      collection(db, COL),
+      { includeMetadataChanges: false },
+      async (snap) => {
+        // Si el snapshot viene del caché local (sin confirmación del servidor),
+        // ignoramos el chequeo de vacío para no re-insertar los defaults
+        // cuando el teléfono cambia de red (WiFi → datos móviles).
+        const esDeServidor = !snap.metadata.fromCache
+
+        if (snap.empty) {
+          if (esDeServidor && !sembrado) {
+            // Única vez real: la colección está vacía en Firestore
+            sembrado = true
+            for (const p of DEFAULT_PRODUCTS) {
+              await addDoc(collection(db, COL), p)
+            }
+          }
+          // Si viene del caché, simplemente esperamos el snapshot del servidor
+          return
         }
-      } else {
+
         const data = snap.docs.map(d => ({
           id: d.id,
           ...d.data(),
-          colores: d.data().colores || []   // compatibilidad con productos existentes
+          colores: d.data().colores || []
         }))
         setProductos(data)
         setCargando(false)
       }
-    })
+    )
     return () => unsub()
   }, [])
 
