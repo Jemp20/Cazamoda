@@ -315,7 +315,7 @@
   height: 100%;
   max-height: 90vh;
   object-fit: cover;
-  object-position: center top;
+  object-position: center center;
   display: block;
 }
 
@@ -487,8 +487,8 @@
 @media (max-width: 640px) {
   .grid { gap: 6px; }
   .modalBox { flex-direction: column; max-height: 96vh; border: none; }
-  .modalMain { flex: 0 0 auto; height: 42vw; min-height: 180px; }
-  .modalImg { height: 100%; object-fit: cover; max-height: none; }
+  .modalMain { flex: 0 0 auto; height: 55vw; min-height: 240px; max-height: 320px; }
+  .modalImg { height: 100%; object-fit: cover; object-position: center center; max-height: none; }
   .modalInfo { padding: 1.2rem 1rem 1.5rem; }
   .modalName { font-size: 1.5rem; }
   .modalTallaBtn { padding: 8px 14px; font-size: 0.7rem; min-width: 44px; }
