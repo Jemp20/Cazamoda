@@ -25,6 +25,20 @@ const sections = [
     ]
   },
   {
+    title: 'Cookies, Google y medicion',
+    body: [
+      'Actualmente el sitio no usa Google Ads, Google AdSense, remarketing, Meta Pixel ni cookies publicitarias propias para perfilar visitantes. Si estos servicios se agregan en el futuro, Cazamoda actualizara esta politica y solicitara el consentimiento que corresponda antes de activar medicion publicitaria o anuncios personalizados.',
+      'El sitio puede cargar servicios tecnicos de terceros, como fuentes web de Google, Firebase y enlaces a redes sociales. Estos servicios pueden tratar datos tecnicos necesarios para entregar contenido, seguridad, rendimiento o disponibilidad del sitio.'
+    ]
+  },
+  {
+    title: 'Autorizacion al enviar formularios',
+    body: [
+      'Al enviar un mensaje, cotizacion o pedido desde la web, el titular declara que conoce esta politica y autoriza a Cazamoda Confeccion a tratar sus datos para responder la solicitud y gestionar la relacion comercial.',
+      'La autorizacion no obliga al titular a aceptar publicidad personalizada ni comunicaciones masivas no relacionadas con su solicitud.'
+    ]
+  },
+  {
     title: 'Derechos de los titulares',
     body: [
       'Conforme a la normativa colombiana de proteccion de datos personales, el titular puede conocer, actualizar, rectificar, solicitar prueba de autorizacion, revocar la autorizacion, solicitar la supresion cuando proceda y presentar consultas o reclamos sobre sus datos.',

@@ -120,6 +120,12 @@ export default function Contacto() {
 
         {error && <p className={styles.errorMsg}>{error}</p>}
 
+        <p className={styles.privacyNotice}>
+          Al enviar este mensaje aceptas nuestra{' '}
+          <a href="/privacidad" target="_blank" rel="noreferrer">Politica de privacidad</a>
+          {' '}y autorizas el tratamiento de tus datos para responder tu solicitud.
+        </p>
+
         <button className={styles.submit} onClick={handleSubmit}>
           Enviar mensaje
         </button>

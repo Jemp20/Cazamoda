@@ -453,6 +453,20 @@
 .waField input:focus { border-bottom-color: #c9a96e; }
 .waField input::placeholder { color: #2e2e2e; }
 .waError { font-family: 'Jost', sans-serif; font-size: 0.62rem; color: #a05050; letter-spacing: 0.06em; margin: 0 0 0.8rem; }
+.waPrivacy {
+  color: rgba(20,18,16,0.58);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 300;
+  line-height: 1.6;
+  margin: 0.4rem 0 0.8rem;
+}
+.waPrivacy a {
+  color: #9c7a3e;
+  font-weight: 500;
+  text-decoration: none;
+}
+.waPrivacy a:hover { color: #141210; }
 .waActions { display: flex; gap: 8px; margin-top: 0.5rem; }
 
 /* Miniaturas modal */

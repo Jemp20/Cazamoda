@@ -70,6 +70,20 @@
 }
 .submit:hover { background: var(--gold-light); }
 
+.privacyNotice {
+  color: rgba(255,255,255,0.45);
+  font-size: 0.72rem;
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+.privacyNotice a {
+  color: var(--gold-light);
+  text-decoration: none;
+}
+
+.privacyNotice a:hover { color: #fff; }
+
 @media (max-width: 900px) {
   .section { grid-template-columns: 1fr; }
   .formRow { grid-template-columns: 1fr; }

@@ -324,6 +324,11 @@ export default function Catalogo() {
                     </div>
                   ))}
                   {formError && <p className={styles.waError}>Por favor completa todos los campos.</p>}
+                  <p className={styles.waPrivacy}>
+                    Al confirmar el pedido aceptas nuestra{' '}
+                    <a href="/privacidad" target="_blank" rel="noreferrer">Politica de privacidad</a>
+                    {' '}y autorizas el uso de tus datos para gestionar esta solicitud.
+                  </p>
                   <div className={styles.waActions}>
                     <button className={styles.boldBtn} onClick={() => setFormOpen(false)}>Cancelar</button>
                     <button className={styles.boldBtn} onClick={enviarWhatsApp} disabled={loading}>
@@ -331,7 +336,7 @@ export default function Catalogo() {
                     </button>
                   </div>
                 </div>
-              )}
+              )} 
             </div>
           </div>
         </div>
