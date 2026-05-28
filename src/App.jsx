@@ -8,11 +8,14 @@ import Clientes  from './components/Clientes'
 import Contacto  from './components/Contacto'
 import Footer    from './components/Footer'
 import Admin     from './components/Admin'
+import Privacidad from './components/Privacidad'
 
 const isAdmin = window.location.pathname === '/admin'
+const isPrivacidad = ['/privacidad', '/politica-de-privacidad', '/politicas-de-privacidad'].includes(window.location.pathname)
 
 export default function App() {
   if (isAdmin) return <Admin />
+  if (isPrivacidad) return <Privacidad />
 
   return (
     <>

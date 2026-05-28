@@ -35,6 +35,7 @@ export default function Footer() {
       <div className={styles.copy}>
         © {new Date().getFullYear()} Cazamoda Confección — Todos los derechos reservados
       </div>
+      <a href="/privacidad" className={styles.privacyLink}>Politica de privacidad</a>
       <div className={styles.social}>
         <a href="https://www.instagram.com/cazamoda_confeccion" target="_blank" rel="noreferrer" className={styles.socialLink}>
           <IconIG />

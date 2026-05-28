@@ -15,6 +15,15 @@
   text-transform: uppercase; font-style: normal !important;
 }
 .copy { color: rgba(255,255,255,0.3); font-size: 0.75rem; }
+.privacyLink {
+  color: rgba(255,255,255,0.48);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+.privacyLink:hover { color: var(--gold-light); }
 .social { display: flex; gap: 1rem; }
 .socialLink {
   width: 36px; height: 36px;
