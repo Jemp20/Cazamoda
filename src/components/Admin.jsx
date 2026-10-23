@@ -1,4 +1,6 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth'
+import { auth as fbAuth } from '../firebase'
 import { useProductos } from '../context/ProductosContext'
 import styles from './Admin.module.css'
 
@@ -7,8 +9,6 @@ const CATEGORIAS_MUJER  = ['Blusas', 'Shorts', 'Vestidos', 'Camisas', 'Pantalón
 const CATEGORIAS_CORP   = ['Administrativo', 'Operativo e Industrial', 'Hospitalarios', 'Hostelería', 'Servicio General', 'Promo Colegiales', 'Otro']
 
 const TALLAS_PRESET = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '28', '30', '32', '34', '36', '38', '40', '42']
-
-const PASS = 'cazamoda2026'
 
 const COLORES_PRESET = [
   { nombre: 'Blanco',     hex: '#FFFFFF' },
@@ -96,8 +96,11 @@ function TallasSelector({ tallas, onChange }) {
 
 export default function Admin() {
   const [auth, setAuth]             = useState(false)
+  const [cargandoAuth, setCargandoAuth] = useState(true)
+  const [emailInput, setEmailInput] = useState('')
   const [passInput, setPassInput]   = useState('')
-  const [passError, setPassError]   = useState(false)
+  const [passError, setPassError]   = useState('')
+  const [loginBusy, setLoginBusy]   = useState(false)
   const [form, setForm]             = useState(EMPTY)
   const [guardado, setGuardado]     = useState(false)
   const [editandoId, setEditandoId] = useState(null)
@@ -120,10 +123,31 @@ export default function Admin() {
 
   const { productos, agregar, eliminar, toggleDisponible, editar } = useProductos()
 
-  const login = () => {
-    if (passInput === PASS) { setAuth(true); setPassError(false) }
-    else setPassError(true)
+  // La sesión la gestiona Firebase Authentication (la contraseña ya no vive en el código)
+  useEffect(() => onAuthStateChanged(fbAuth, user => {
+    setAuth(!!user)
+    setCargandoAuth(false)
+  }), [])
+
+  const login = async () => {
+    if (loginBusy) return
+    setLoginBusy(true)
+    setPassError('')
+    try {
+      await signInWithEmailAndPassword(fbAuth, emailInput.trim(), passInput)
+      setPassInput('')
+    } catch (e) {
+      setPassError(
+        e.code === 'auth/too-many-requests'
+          ? 'Demasiados intentos. Espera unos minutos e inténtalo de nuevo.'
+          : 'Correo o contraseña incorrectos'
+      )
+    } finally {
+      setLoginBusy(false)
+    }
   }
+
+  const cerrarSesion = () => signOut(fbAuth)
 
   const categorias = form.genero === 'Mujer'
     ? CATEGORIAS_MUJER
@@ -241,6 +265,8 @@ export default function Admin() {
     setTimeout(() => setGuardado(false), 2500)
   }
 
+  if (cargandoAuth) return <div className={styles.loginWrap}><p className={styles.loginSub}>Cargando…</p></div>
+
   if (!auth) return (
     <div className={styles.loginWrap}>
       <div className={styles.loginBox}>
@@ -248,14 +274,26 @@ export default function Admin() {
         <p className={styles.loginSub}>Panel de administración</p>
         <input
           className={styles.loginInput}
+          type="email"
+          placeholder="Correo"
+          autoComplete="username"
+          value={emailInput}
+          onChange={e => setEmailInput(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && login()}
+        />
+        <input
+          className={styles.loginInput}
           type="password"
           placeholder="Contraseña"
+          autoComplete="current-password"
           value={passInput}
           onChange={e => setPassInput(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && login()}
         />
-        {passError && <p className={styles.loginError}>Contraseña incorrecta</p>}
-        <button className={styles.loginBtn} onClick={login}>Entrar</button>
+        {passError && <p className={styles.loginError}>{passError}</p>}
+        <button className={styles.loginBtn} onClick={login} disabled={loginBusy}>
+          {loginBusy ? 'Entrando…' : 'Entrar'}
+        </button>
       </div>
     </div>
   )
@@ -274,6 +312,7 @@ export default function Admin() {
           <div className={styles.stat}><span>{productos.length}</span>Total</div>
         </div>
         <a href="/" className={styles.verSitio}>← Ver sitio</a>
+        <button type="button" className={styles.verSitio} onClick={cerrarSesion} style={{ background: 'none', cursor: 'pointer' }}>Cerrar sesión</button>
       </header>
 
       <div className={styles.body}>

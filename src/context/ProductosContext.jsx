@@ -39,9 +39,13 @@ export function ProductosProvider({ children }) {
           if (esDeServidor && !sembrado) {
             // Única vez real: la colección está vacía en Firestore
             sembrado = true
-            for (const p of DEFAULT_PRODUCTS) {
-              await addDoc(collection(db, COL), p)
-            }
+            // Con las reglas de seguridad activas solo el admin autenticado puede escribir;
+            // para visitantes este intento se rechaza y se ignora.
+            try {
+              for (const p of DEFAULT_PRODUCTS) {
+                await addDoc(collection(db, COL), p)
+              }
+            } catch { /* sin permisos: es lo esperado para visitantes */ }
           }
           // Si viene del caché, simplemente esperamos el snapshot del servidor
           return
@@ -53,6 +57,10 @@ export function ProductosProvider({ children }) {
           colores: d.data().colores || []
         }))
         setProductos(data)
+        setCargando(false)
+      },
+      (err) => {
+        console.error('Firestore:', err.code)
         setCargando(false)
       }
     )

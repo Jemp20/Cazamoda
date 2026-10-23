@@ -26,7 +26,7 @@ export default function Galeria() {
       <div ref={gridRef} className={`${styles.masonry} reveal`}>
         {photos.map((src, i) => (
           <div key={i} className={styles.item}>
-            <img src={src} alt={`Galería ${i + 1}`} />
+            <img src={`/${src}`} alt={`Prenda confeccionada en Cazamoda, trabajo ${i + 1} de la galería`} loading="lazy" decoding="async" />
             <div className={styles.hover}><span>+</span></div>
           </div>
         ))}

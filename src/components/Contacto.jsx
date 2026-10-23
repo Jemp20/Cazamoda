@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useReveal } from '../hooks/useReveal'
 import styles from './Contacto.module.css'
 
@@ -19,22 +19,37 @@ export default function Contacto() {
 
   const [form, setForm] = useState({ nombre: '', telefono: '', servicio: '', mensaje: '' })
   const [error, setError] = useState('')
+  const [trampa, setTrampa] = useState('')       // honeypot: los humanos no lo ven ni lo llenan
+  const abiertoEn = useRef(Date.now())
+  const ultimoEnvio = useRef(0)
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value })
 
+  const limpiar = t => t.replace(/[\u0000-\u001F\u007F]/g, ' ').trim()
+
   const handleSubmit = () => {
+    // Antispam: campo trampa lleno, envío demasiado rápido o repetido
+    if (trampa) return
+    if (Date.now() - abiertoEn.current < 3000) { setError('Un momento, intenta de nuevo en unos segundos.'); return }
+    if (Date.now() - ultimoEnvio.current < 30000) { setError('Ya enviaste un mensaje. Espera unos segundos para enviar otro.'); return }
+
     if (!form.nombre.trim() || !form.telefono.trim()) {
       setError('Por favor completa los campos.')
       return
     }
+    if (!/^[+\d\s()-]{7,20}$/.test(form.telefono.trim())) {
+      setError('Escribe un número de teléfono válido.')
+      return
+    }
     setError('')
+    ultimoEnvio.current = Date.now()
 
     const texto =
       `Hola, me contacto desde el sitio web de Cazamoda \n\n` +
-      `*Nombre:* ${form.nombre}\n` +
-      `*Teléfono:* ${form.telefono}\n` +
+      `*Nombre:* ${limpiar(form.nombre)}\n` +
+      `*Teléfono:* ${limpiar(form.telefono)}\n` +
       `*Servicio de interés:* ${form.servicio || 'No especificado'}\n` +
-      `*Mensaje:* ${form.mensaje || 'Sin mensaje adicional'}`
+      `*Mensaje:* ${limpiar(form.mensaje) || 'Sin mensaje adicional'}`
 
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(texto)}`
     window.open(url, '_blank')
@@ -55,7 +70,7 @@ export default function Contacto() {
             <div key={item.text} className={styles.item}>
               <div className={styles.icon}>{item.icon}</div>
               {item.href
-                ? <a href={item.href} target="_blank" rel="noreferrer">{item.text}</a>
+                ? <a href={item.href} target="_blank" rel="noopener noreferrer">{item.text}</a>
                 : <span>{item.text}</span>
               }
             </div>
@@ -64,7 +79,7 @@ export default function Contacto() {
         <a
           href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20sus%20servicios`}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className={styles.whatsapp}
         >
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -81,6 +96,8 @@ export default function Contacto() {
             <input
               type="text"
               name="nombre"
+              maxLength={60}
+              autoComplete="name"
               placeholder="Tu nombre"
               value={form.nombre}
               onChange={handleChange}
@@ -91,6 +108,8 @@ export default function Contacto() {
             <input
               type="tel"
               name="telefono"
+              maxLength={20}
+              autoComplete="tel"
               placeholder="+57 300 000 0000"
               value={form.telefono}
               onChange={handleChange}
@@ -111,6 +130,7 @@ export default function Contacto() {
           <label>Mensaje</label>
           <textarea
             name="mensaje"
+            maxLength={500}
             rows="5"
             placeholder="Cuéntanos lo que necesitas..."
             value={form.mensaje}
@@ -118,11 +138,23 @@ export default function Contacto() {
           />
         </div>
 
-        {error && <p className={styles.errorMsg}>{error}</p>}
+        {/* Honeypot anti-spam (oculto para personas) */}
+        <input
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          value={trampa}
+          onChange={e => setTrampa(e.target.value)}
+          style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+        />
+
+        {error && <p className={styles.errorMsg} role="alert">{error}</p>}
 
         <p className={styles.privacyNotice}>
           Al enviar este mensaje aceptas nuestra{' '}
-          <a href="/privacidad" target="_blank" rel="noreferrer">Politica de privacidad</a>
+          <a href="/privacidad" target="_blank" rel="noopener noreferrer">Politica de privacidad</a>
           {' '}y autorizas el tratamiento de tus datos para responder tu solicitud.
         </p>
 

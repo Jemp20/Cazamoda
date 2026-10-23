@@ -28,25 +28,35 @@ function IconTK() {
 export default function Footer() {
   return (
     <footer className={styles.footer}>
-      <div className={styles.logo}>
-        CAZA<span>MODA</span>{' '}
-        <span className={styles.sub}>confección</span>
+      <div className={styles.main}>
+        <div className={styles.logo}>
+          CAZA<span>MODA</span>{' '}
+          <span className={styles.sub}>confección</span>
+        </div>
+        <div className={styles.copy}>
+          © {new Date().getFullYear()} Cazamoda Confección — Todos los derechos reservados
+        </div>
+        <div className={styles.social}>
+          <a href="https://www.instagram.com/cazamoda_confeccion" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Cazamoda" className={`${styles.socialLink} ${styles.ig}`}>
+            <IconIG />
+          </a>
+          <a href="https://wa.me/573001281861" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp de Cazamoda" className={`${styles.socialLink} ${styles.wa}`}>
+            <IconWA />
+          </a>
+          <a href="https://www.tiktok.com/@cazamoda.confecci?_r=1&_t=ZS-94sluWASf0j" target="_blank" rel="noopener noreferrer" aria-label="TikTok de Cazamoda" className={`${styles.socialLink} ${styles.tk}`}>
+            <IconTK />
+          </a>
+        </div>
       </div>
-      <div className={styles.copy}>
-        © {new Date().getFullYear()} Cazamoda Confección — Todos los derechos reservados
-      </div>
-      <a href="/privacidad" className={styles.privacyLink}>Politica de privacidad</a>
-      <div className={styles.social}>
-        <a href="https://www.instagram.com/cazamoda_confeccion" target="_blank" rel="noreferrer" className={styles.socialLink}>
-          <IconIG />
-        </a>
-        <a href="https://wa.me/573001281861" target="_blank" rel="noreferrer" className={styles.socialLink}>
-          <IconWA />
-        </a>
-        <a href="https://www.tiktok.com/@cazamoda.confecci?_r=1&_t=ZS-94sluWASf0j" target="_blank" rel="noreferrer" className={styles.socialLink}>
-          <IconTK />
-        </a>
-      </div>
+
+      <nav className={styles.legalLinks} aria-label="Información legal">
+        <a href="/aviso-legal" className={styles.privacyLink}>Aviso legal</a>
+        <a href="/privacidad" className={styles.privacyLink}>Política de privacidad</a>
+        <a href="/cookies" className={styles.privacyLink}>Política de cookies</a>
+        <button type="button" className={styles.privacyLink} onClick={() => window.dispatchEvent(new Event('cazamoda:cookies'))}>
+          Preferencias de cookies
+        </button>
+      </nav>
     </footer>
   )
 }

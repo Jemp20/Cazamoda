@@ -45,7 +45,7 @@ export default function Clientes() {
       <div className={styles.grid}>
         {clientes.map(c => (
           <div key={c.alt} className={styles.cell}>
-            <img src={c.src} alt={c.alt} className={styles.logo} />
+            <img src={c.src} alt={`Logo de ${c.alt}`} className={styles.logo} loading="lazy" decoding="async" />
             <span className={styles.nombre}>{c.nombre}</span>
           </div>
         ))}

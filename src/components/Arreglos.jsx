@@ -62,6 +62,8 @@ export default function Arreglos() {
   loop
   autoPlay
   muted
+  preload="metadata"
+  aria-label="Video del servicio de arreglos de Cazamoda"
 />
           <div>
           </div>

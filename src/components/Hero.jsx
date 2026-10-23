@@ -44,7 +44,7 @@ export default function Hero() {
         <div className={styles.imgGrid}>
           {heroImages.map((img, i) => (
             <div key={i} className={`${styles.imgCard} ${img.span ? styles.span : ''}`}>
-              <img src={img.src} alt={img.alt} />
+              <img src={img.src} alt={img.alt} decoding="async" />
             </div>
           ))}
         </div>

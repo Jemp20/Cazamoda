@@ -9,14 +9,25 @@ import Contacto  from './components/Contacto'
 import Footer    from './components/Footer'
 import Admin     from './components/Admin'
 import Privacidad from './components/Privacidad'
+import AvisoLegal from './components/AvisoLegal'
+import Cookies    from './components/Cookies'
+import NotFound   from './components/NotFound'
+import CookieBanner  from './components/CookieBanner'
+import WhatsAppFloat from './components/WhatsAppFloat'
 
-const isAdmin = window.location.pathname === '/admin'
-const isPrivacidad = ['/privacidad', '/politica-de-privacidad', '/politicas-de-privacidad'].includes(window.location.pathname)
+const path = window.location.pathname.replace(/\/+$/, '') || '/'
 
-export default function App() {
-  if (isAdmin) return <Admin />
-  if (isPrivacidad) return <Privacidad />
+const RUTAS = {
+  '/admin': Admin,
+  '/privacidad': Privacidad,
+  '/politica-de-privacidad': Privacidad,
+  '/politicas-de-privacidad': Privacidad,
+  '/aviso-legal': AvisoLegal,
+  '/cookies': Cookies,
+  '/politica-de-cookies': Cookies,
+}
 
+function Inicio() {
   return (
     <>
       <Navbar />
@@ -31,4 +42,18 @@ export default function App() {
     </>
   )
 }
-// test deploy after vite fix
+
+export default function App() {
+  const Pagina = path === '/' ? Inicio : RUTAS[path] || NotFound
+
+  // El panel de administración no lleva banner de cookies ni botón de WhatsApp
+  if (Pagina === Admin) return <Admin />
+
+  return (
+    <>
+      <Pagina />
+      <WhatsAppFloat />
+      <CookieBanner />
+    </>
+  )
+}

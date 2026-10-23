@@ -1,8 +1,11 @@
 .footer {
   background: var(--deep);
-  padding: 3rem 8%;
-  display: flex; align-items: center; justify-content: space-between;
+  padding: 3rem 8% 1.8rem;
+  display: flex; flex-direction: column; gap: 2rem;
   border-top: 1px solid rgba(184,151,90,0.2);
+}
+.main {
+  display: flex; align-items: center; justify-content: space-between; gap: 2rem;
 }
 .logo {
   font-family: 'Cormorant Garamond', serif;
@@ -14,26 +17,54 @@
   font-size: 0.75rem !important; letter-spacing: 0.18em;
   text-transform: uppercase; font-style: normal !important;
 }
-.copy { color: rgba(255,255,255,0.3); font-size: 0.75rem; }
+.copy { color: rgba(255,255,255,0.55); font-size: 0.75rem; max-width: 260px; }
+
+/* Enlaces legales: una sola fila ordenada, centrada y con separadores */
+.legalLinks {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: .6rem 0;
+  padding-top: 1.4rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
 .privacyLink {
-  color: rgba(255,255,255,0.48);
+  font-family: 'Jost', sans-serif;
+  color: rgba(255,255,255,0.6);
   font-size: 0.72rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-decoration: none;
   text-transform: uppercase;
+  background: none; border: none; cursor: pointer;
+  padding: 0 1.1rem;
   transition: color 0.3s;
 }
-.privacyLink:hover { color: var(--gold-light); }
-.social { display: flex; gap: 1rem; }
+.privacyLink + .privacyLink { border-left: 1px solid rgba(255,255,255,0.18); }
+.privacyLink:hover, .privacyLink:focus-visible { color: var(--gold-light); }
+
+/* Redes sociales con los colores de cada marca */
+.social { display: flex; gap: .8rem; }
 .socialLink {
-  width: 36px; height: 36px;
-  border: 1px solid rgba(255,255,255,0.15);
+  width: 38px; height: 38px; border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
-  color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8rem;
-  transition: all 0.3s;
+  color: #fff; text-decoration: none;
+  transition: transform .25s, box-shadow .25s;
 }
-.socialLink:hover { border-color: var(--gold); color: var(--gold); }
+.socialLink:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,.45); }
+.ig { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+.wa { background: #25D366; }
+.tk { background: #000; border: 1px solid rgba(255,255,255,0.25); }
+.tk svg { filter: drop-shadow(1.5px 1.5px 0 #FE2C55) drop-shadow(-1.5px -1.5px 0 #25F4EE); }
 
 @media (max-width: 900px) {
-  .footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+  .main { flex-direction: column; text-align: center; gap: 1.4rem; }
+  .copy { max-width: none; }
+  .privacyLink { padding: 0 .8rem; }
 }
+@media (max-width: 520px) {
+  .legalLinks { flex-direction: column; gap: .9rem; }
+  .privacyLink + .privacyLink { border-left: none; }
+}
+
+/* Iconos más grandes y nítidos */
+.socialLink { width: 42px; height: 42px; }
+.socialLink svg { width: 24px; height: 24px; display: block; }
+.tk svg { filter: drop-shadow(1px 1px 0 #FE2C55) drop-shadow(-1px -1px 0 #25F4EE); }

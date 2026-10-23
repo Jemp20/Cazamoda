@@ -27,7 +27,7 @@ const sections = [
   {
     title: 'Cookies, Google y medicion',
     body: [
-      'Actualmente el sitio no usa Google Ads, Google AdSense, remarketing, Meta Pixel ni cookies publicitarias propias para perfilar visitantes. Si estos servicios se agregan en el futuro, Cazamoda actualizara esta politica y solicitara el consentimiento que corresponda antes de activar medicion publicitaria o anuncios personalizados.',
+      'El sitio no usa Google Ads, Google AdSense, remarketing, Meta Pixel ni cookies publicitarias para perfilar visitantes. Si aceptas el aviso de cookies, usamos Vercel Web Analytics para medir visitas de forma agregada y anonima, sin cookies. Puedes cambiar tu decision en cualquier momento desde Preferencias de cookies, al final de la pagina. Mas detalles en la Politica de cookies (/cookies).',
       'El sitio puede cargar servicios tecnicos de terceros, como fuentes web de Google, Firebase y enlaces a redes sociales. Estos servicios pueden tratar datos tecnicos necesarios para entregar contenido, seguridad, rendimiento o disponibilidad del sitio.'
     ]
   },
@@ -67,7 +67,7 @@ export default function Privacidad() {
             la informacion personal de clientes, visitantes y personas interesadas
             en sus prendas, arreglos y servicios de confeccion.
           </p>
-          <p className={styles.updated}>Ultima actualizacion: 28 de mayo de 2026</p>
+          <p className={styles.updated}>Ultima actualizacion: 23 de octubre de 2026</p>
         </section>
 
         <section className={styles.content} aria-label="Politica de privacidad de Cazamoda">
@@ -79,7 +79,7 @@ export default function Privacidad() {
               atencion digital y presencial.
             </p>
             <p>
-              Canal de contacto principal: WhatsApp <a href="https://wa.me/573001281861" target="_blank" rel="noreferrer">+57 300 128 1861</a>.
+              Canal de contacto principal: WhatsApp <a href="https://wa.me/573001281861" target="_blank" rel="noopener noreferrer">+57 300 128 1861</a>.
             </p>
           </article>
 
@@ -90,15 +90,7 @@ export default function Privacidad() {
             </article>
           ))}
 
-          <article className={styles.notice}>
-            <h2>Nota importante</h2>
-            <p>
-              Esta politica es una base informativa para el sitio web. Si Cazamoda
-              realiza campanas masivas, pagos en linea, cookies analiticas avanzadas
-              o recoleccion de datos sensibles, conviene revisarla y ajustarla con
-              asesoria legal especializada.
-            </p>
-          </article>
+          
         </section>
       </main>
       <Footer />

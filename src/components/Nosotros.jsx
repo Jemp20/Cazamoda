@@ -14,8 +14,10 @@ export default function Nosotros() {
     <section id="nosotros" className={styles.section}>
       <div ref={imgRef} className={`${styles.imgWrap} reveal`}>
         <img
-          src="Cazamoda1.jpeg"
-          alt="Taller Cazamoda"
+          src="/Cazamoda1.jpeg"
+          alt="Taller de confección Cazamoda"
+          loading="lazy"
+          decoding="async"
         />
         <div className={styles.badge}>
           <div className={styles.badgeNum}>+10</div>
