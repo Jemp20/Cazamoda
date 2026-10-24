@@ -2,17 +2,23 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Catálogo: cualquiera puede VER los productos, solo el admin puede crear/editar/borrar.
+    // Catálogo: cualquiera puede VER los productos, solo los admins pueden crear/editar/borrar.
     match /productos/{id} {
       allow read: if true;
       allow write: if request.auth != null
-                   && request.auth.token.email == 'joelby1234@gmail.com';
+                   && request.auth.token.email in [
+                        'joelby1234@gmail.com',
+                        'caroltorressolano@gmail.com'
+                      ];
     }
 
-    // Todo lo demás (ventas, clientes, etc.): solo el admin.
+    // Todo lo demás (ventas, clientes, etc.): solo los admins.
     match /{document=**} {
       allow read, write: if request.auth != null
-                         && request.auth.token.email == 'joelby1234@gmail.com';
+                         && request.auth.token.email in [
+                              'joelby1234@gmail.com',
+                              'caroltorressolano@gmail.com'
+                            ];
     }
   }
 }
